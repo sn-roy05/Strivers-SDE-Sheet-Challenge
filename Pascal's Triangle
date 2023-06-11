@@ -1,0 +1,99 @@
+APPROACH1 
+
+
+#include <bits/stdc++.h>
+//brute force 
+vector<vector<long long int>> printPascal(int n) 
+{
+  vector<vector<long long int>> res;
+  long long int t1=1, t2=0;
+  vector<long long int> temp1;
+  for(int i=0;i<n;i++)
+  {
+    vector<long long int> temp2;
+    for(int j=0;j<=temp1.size();j++)
+    {
+      if(j==0||(j==temp1.size()))
+      {
+        temp2.push_back(1);
+      }
+      else{
+        t1=temp1[j-1];
+        t2=temp1[j];
+        temp2.push_back(t1+t2);
+      }
+      
+    }
+    res.push_back(temp2);
+    swap(temp1,temp2);
+
+  }
+  return res;
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+APPROACH2
+
+#include <bits/stdc++.h>
+//brute force optimised approach
+vector<vector<long long int>> printPascal(int n) 
+{
+  vector<vector<long long int>> res(n);
+  for (int i = 0; i < n; i++) {
+  res[i].resize(i+1);
+  res[i][0]=res[i][i]=1;
+  for(int j=1;j<i;j++)
+  {
+    res[i][j]=res[i-1][j-1]+res[i-1][j];
+  }
+
+  }
+  return res;
+}
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+APPROACH3
+
+#include <bits/stdc++.h>
+//approach 3 O(n2) sc=O(1) optimised approach
+void setZeros(vector<vector<int>> &matrix)
+{
+	int n=matrix.size();
+	int m=matrix[0].size();
+	int col0=1;
+	for(int i=0;i<n;i++)
+	{
+          for (int j = 0; j < m; j++) {
+            if (matrix[i][j] == 0) {
+              //mark the i-th row
+              matrix[i][0]=0;
+              //mark the j-th col
+              if(j!=0)
+              matrix[0][j] = 0;
+              else col0=0;
+            }
+          }
+    }
+
+    for(int i=1;i<n;i++)
+	{
+          for (int j = 1; j < m; j++) {
+            if (matrix[i][j] != 0) {
+              if (matrix[0][j] == 0 || matrix[i][0] == 0)
+                matrix[i][j] = 0;
+            }
+          }
+        }
+
+        if(matrix[0][0]==0)
+        {
+          for(int i=0;i<m;i++)
+          matrix[0][i]=0;
+        }
+        if (col0 == 0) {
+          for (int i = 0; i < n; i++)
+            matrix[i][0] = 0;
+        }
+}
